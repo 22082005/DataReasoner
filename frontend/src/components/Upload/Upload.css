@@ -1,0 +1,186 @@
+.upload-section {
+    display: flex;
+    justify-content: center;
+
+    padding: 20px 20px 80px;
+}
+
+.upload-card {
+    width: 100%;
+    max-width: 650px;
+
+    padding: 50px;
+
+    text-align: center;
+
+    background: white;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.upload-icon {
+    width: 60px;
+    height: 60px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #eff6ff;
+    color: #2563eb;
+
+    font-size: 2rem;
+}
+
+.upload-card h2 {
+    margin-bottom: 10px;
+
+    font-size: 1.6rem;
+
+    color: #1e293b;
+}
+
+.upload-card p {
+    margin-bottom: 30px;
+
+    color: #64748b;
+}
+
+.upload-button {
+    display: inline-block;
+
+    padding: 12px 24px;
+
+    background: #2563eb;
+    color: white;
+
+    border-radius: 8px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.upload-button:hover {
+    background: #1d4ed8;
+}
+
+.selected-file {
+    margin-top: 25px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+
+    color: #64748b;
+}
+
+.selected-file strong {
+    color: #1e293b;
+}
+
+/* ----------------------------- */
+/* Target Section */
+/* ----------------------------- */
+
+.target-section{
+
+    margin-top:30px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+    text-align:left;
+
+}
+
+.target-section h3{
+
+    color:#1e293b;
+
+    font-size:1.2rem;
+
+    font-weight:600;
+
+}
+
+.target-section p{
+
+    color:#64748b;
+
+    font-size:0.95rem;
+
+}
+
+.target-section select{
+
+    width:100%;
+
+    padding:12px;
+
+    border:1px solid #cbd5e1;
+
+    border-radius:8px;
+
+    font-size:1rem;
+
+    outline:none;
+
+    transition:.3s;
+
+    background:white;
+
+}
+
+.target-section select:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:0 0 0 3px rgba(37,99,235,.15);
+
+}
+
+.proceed-button{
+
+    margin-top:10px;
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:#2563eb;
+
+    color:white;
+
+    font-size:1rem;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.proceed-button:hover{
+
+    background:#1d4ed8;
+
+}
