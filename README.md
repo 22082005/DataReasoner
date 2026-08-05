@@ -304,6 +304,6 @@ The long-term vision is to evolve DataReasoner into an autonomous AI data analys
 
 # 👨‍💻 Author
 
-**VK**
+**Vishnu Kummari**
 
 AI | Machine Learning | Data Science | LLM Engineering
