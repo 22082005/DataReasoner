@@ -9,6 +9,10 @@ def analyze_missing_values(df: pd.DataFrame):
     """
     Analyze missing values in the dataset.
 
+    Parameters
+    ----------
+    df : pd.DataFrame
+
     Returns
     -------
     dict
@@ -19,7 +23,6 @@ def analyze_missing_values(df: pd.DataFrame):
     results = []
 
     total_missing = 0
-
     columns_with_missing = 0
 
     for column in df.columns:
@@ -27,26 +30,23 @@ def analyze_missing_values(df: pd.DataFrame):
         missing_count = int(df[column].isna().sum())
 
         missing_percentage = round(
-
             (missing_count / total_rows) * 100,
-
             2
-
         )
 
         if missing_count > 0:
-
             columns_with_missing += 1
-
             total_missing += missing_count
 
         results.append({
 
-            "column_name": column,
+            "feature": column,
 
             "missing_count": missing_count,
 
-            "missing_percentage": missing_percentage
+            "missing_percentage": missing_percentage,
+
+            "has_missing": missing_count > 0
 
         })
 
@@ -54,15 +54,32 @@ def analyze_missing_values(df: pd.DataFrame):
 
         "summary": {
 
+            "total_features": len(df.columns),
+
+            "total_rows": total_rows,
+
             "total_missing": total_missing,
 
             "columns_with_missing": columns_with_missing,
+
+            "columns_without_missing":
+                len(df.columns) - columns_with_missing,
 
             "has_missing": total_missing > 0
 
         },
 
-        "results": results
+        "results": results,
+
+        "recommendations": [],
+
+        "metadata": {
+
+            "module": "Missing Values",
+
+            "version": "1.0"
+
+        }
 
     }
 

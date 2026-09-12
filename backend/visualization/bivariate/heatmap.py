@@ -1,6 +1,4 @@
-from visualization.utils import (
-    create_chart_response
-)
+from visualization.utils import create_chart_response
 
 
 def heatmap(correlation_results):
@@ -10,6 +8,7 @@ def heatmap(correlation_results):
     Parameters
     ----------
     correlation_results : list
+        Correlation result records.
 
     Returns
     -------
@@ -22,14 +21,15 @@ def heatmap(correlation_results):
 
     for result in correlation_results:
 
-        x = result["column_1"]
+        x = result["feature"]
 
-        y = result["column_2"]
+        statistics = result["statistics"]
 
-        value = result["correlation"]
+        y = statistics["related_feature"]
+
+        value = statistics["correlation"]
 
         labels.add(x)
-
         labels.add(y)
 
         matrix.setdefault(x, {})[y] = value
@@ -37,6 +37,10 @@ def heatmap(correlation_results):
         matrix.setdefault(y, {})[x] = value
 
     labels = sorted(labels)
+
+    # ---------------------------------------------
+    # Diagonal = perfect self-correlation
+    # ---------------------------------------------
 
     for label in labels:
 

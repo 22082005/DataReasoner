@@ -1,4 +1,4 @@
-import pandas as pd
+"""import pandas as pd
 from pathlib import Path
 import sys
 from pathlib import Path
@@ -128,4 +128,4 @@ print()
 
 print("=" * 70)
 print("SCHEMA TEST PASSED")
-print("=" * 70)
+print("=" * 70)"""

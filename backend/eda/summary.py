@@ -3,7 +3,8 @@ import pandas as pd
 
 def generate_summary(
     df: pd.DataFrame,
-    schema: list
+    schema: list,
+    target:str
 ):
     """
     Generate a high-level dataset summary.
@@ -31,7 +32,7 @@ def generate_summary(
 
     identifier_columns = 0
 
-    target_column = None
+    target_column = target
 
     for column in schema:
 
@@ -39,9 +40,7 @@ def generate_summary(
 
             identifier_columns += 1
 
-        if column["semantic_role"] == "Target":
-
-            target_column = column["column_name"]
+        
 
         dtype = column["type"].lower()
 

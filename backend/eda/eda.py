@@ -1,5 +1,4 @@
 import pandas as pd
-from pprint import pprint
 
 from scchema_inference.infer_schema import infer_schema
 
@@ -27,8 +26,11 @@ from eda.insights import generate_insights
 from eda.selector import select_insights
 
 
+from recommendation.engine import generate_recommendations
+
 def analyze_eda(
     df: pd.DataFrame,
+    target: str,
     debug: bool = False
 ):
     """
@@ -37,6 +39,10 @@ def analyze_eda(
     Parameters
     ----------
     df : pandas.DataFrame
+        Input dataset.
+
+    target : str
+        Target column explicitly selected by the user.
 
     debug : bool, default=False
         Print intermediate outputs.
@@ -44,6 +50,7 @@ def analyze_eda(
     Returns
     -------
     dict
+        Complete EDA results.
     """
 
     # -------------------------------------------------
@@ -56,9 +63,13 @@ def analyze_eda(
     # Preprocessing
     # -------------------------------------------------
 
-    missing_values = analyze_missing_values(df)
+    missing_values = analyze_missing_values(
+        df
+    )
 
-    duplicates = analyze_duplicates(df)
+    duplicates = analyze_duplicates(
+        df
+    )
 
     outliers = analyze_outliers(
         df,
@@ -79,14 +90,18 @@ def analyze_eda(
         schema
     )
 
+    # Target-aware hypothesis testing
     hypothesis = analyze_hypothesis_testing(
         df,
-        schema
+        schema,
+        target
     )
 
+    # Target-aware information theory
     information = analyze_information(
         df,
-        schema
+        schema,
+        target
     )
 
     # -------------------------------------------------
@@ -113,7 +128,8 @@ def analyze_eda(
 
     summary = generate_summary(
         df,
-        schema
+        schema,
+        target
     )
 
     # -------------------------------------------------
@@ -124,7 +140,40 @@ def analyze_eda(
 
         print("Debug Mode")
 
-        return
+        print("\nSchema:")
+        print(schema)
+
+        print("\nMissing Values:")
+        print(missing_values)
+
+        print("\nDuplicates:")
+        print(duplicates)
+
+        print("\nOutliers:")
+        print(outliers)
+
+        print("\nDescriptive Statistics:")
+        print(descriptive)
+
+        print("\nCorrelation:")
+        print(correlation)
+
+        print("\nHypothesis Testing:")
+        print(hypothesis)
+
+        print("\nInformation Theory:")
+        print(information)
+
+        print("\nFeature Selection:")
+        print(feature_selection)
+
+        print("\nVisualization:")
+        print(visualization)
+
+        print("\nSummary:")
+        print(summary)
+
+        return None
 
     # -------------------------------------------------
     # Insights
@@ -132,28 +181,51 @@ def analyze_eda(
 
     insights = generate_insights(
 
-        missing_values=missing_values,
+    missing_values=missing_values,
 
-        duplicates=duplicates,
+    duplicates=duplicates,
 
-        outliers=outliers,
+    outliers=outliers,
 
-        correlation=correlation,
+    correlation=correlation,
 
-        hypothesis=hypothesis,
+    hypothesis=hypothesis,
 
-        feature_selection=feature_selection
+    information=information,
+
+    feature_selection=feature_selection,
+
+    visualization=visualization
 
     )
-
     insights = select_insights(
         insights
     )
 
     # -------------------------------------------------
+# Recommendations
+# -------------------------------------------------
+
+    recommendations = generate_recommendations(
+
+    information=information,
+
+    hypothesis=hypothesis,
+
+    feature_selection=feature_selection,
+
+    correlation=correlation,
+
+    visualization=visualization
+
+)
+    print("\nRECOMMENDATIONS:")
+    print(recommendations)
+
+    # -------------------------------------------------
     # Final Result
     # -------------------------------------------------
-
+ 
     return {
 
         "summary": summary,
@@ -162,30 +234,40 @@ def analyze_eda(
 
         "preprocessing": {
 
-            "missing_values": missing_values,
+            "missing_values":
+                missing_values,
 
-            "duplicates": duplicates,
+            "duplicates":
+                duplicates,
 
-            "outliers": outliers
+            "outliers":
+                outliers
 
         },
 
         "statistics": {
 
-            "descriptive": descriptive,
+            "descriptive":
+                descriptive,
 
-            "correlation": correlation,
+            "correlation":
+                correlation,
 
-            "hypothesis": hypothesis,
+            "hypothesis":
+                hypothesis,
 
-            "information_theory": information
+            "information_theory":
+                information
 
         },
 
-        "feature_selection": feature_selection,
+        "feature_selection":
+            feature_selection,
 
-        "visualization": visualization,
+        "visualization":
+            visualization,
 
-        "insights": insights
+        "insights":
+            insights
 
     }

@@ -1,7 +1,7 @@
 import "./MissingValues.css";
 
 function MissingValues({ missing }) {
-    const {summary,results}=missing;
+    const {results}=missing;
     console.log(results);
 
     return (
@@ -28,9 +28,9 @@ function MissingValues({ missing }) {
 
                 <tbody>
 
-                    {missing.results.map((item) => (
+                    {results.map((item, index) => (
 
-                        <tr key={item.column_name}>
+                        <tr key={`${item.column_name || "column"}-${index}`}>
 
                             <td>{item.column_name}</td>
 

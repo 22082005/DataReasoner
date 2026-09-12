@@ -5,26 +5,47 @@ from .selector import select_hypothesis_test
 
 def analyze_hypothesis_testing(
     df: pd.DataFrame,
-    schema: list
+    schema: list,
+    target: str
 ):
     """
     Perform hypothesis testing for all eligible
-    features against the target column.
+    features against the user-selected target column.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Input dataset.
+
+    schema : list
+        Inferred schema information for the dataset.
+
+    target : str
+        Target column explicitly selected by the user.
 
     Returns
     -------
     dict
+        Hypothesis testing analysis results.
     """
+
+    # ---------------------------------------
+    # Find user-selected target in schema
+    # ---------------------------------------
 
     target_schema = None
 
     for column in schema:
 
-        if column["semantic_role"] == "Target":
+        if column["column_name"] == target:
 
             target_schema = column
 
             break
+
+    # ---------------------------------------
+    # Target not found
+    # ---------------------------------------
 
     if target_schema is None:
 
@@ -34,7 +55,11 @@ def analyze_hypothesis_testing(
 
                 "target_detected": False,
 
-                "analyzed_features": 0
+                "target": target,
+
+                "analyzed_features": 0,
+
+                "significant_features": 0
 
             },
 
@@ -52,7 +77,11 @@ def analyze_hypothesis_testing(
 
         }
 
-    target = df[target_schema["column_name"]]
+    # ---------------------------------------
+    # Get target series
+    # ---------------------------------------
+
+    target_series = df[target_schema["column_name"]]
 
     analyzed_features = 0
 
@@ -60,25 +89,27 @@ def analyze_hypothesis_testing(
 
     results = []
 
+    # ---------------------------------------
+    # Analyze each feature
+    # ---------------------------------------
+
     for feature_schema in schema:
 
-        # ---------------------------------------
+        # -----------------------------------
         # Skip Target & Identifier
-        # ---------------------------------------
+        # -----------------------------------
 
-        if feature_schema["semantic_role"] in [
-
-            "Target",
-
-            "Identifier"
-
-        ]:
+        if feature_schema["column_name"] == target:
 
             continue
 
-        # ---------------------------------------
+        if feature_schema["semantic_role"] == "identifier":
+
+            continue
+
+        # -----------------------------------
         # Skip unsupported columns
-        # ---------------------------------------
+        # -----------------------------------
 
         if not feature_schema["use_for_analysis"]:
 
@@ -86,13 +117,23 @@ def analyze_hypothesis_testing(
 
         analyzed_features += 1
 
-        feature = df[feature_schema["column_name"]]
+        # -----------------------------------
+        # Get feature series
+        # -----------------------------------
+
+        feature = df[
+            feature_schema["column_name"]
+        ]
+
+        # -----------------------------------
+        # Select appropriate hypothesis test
+        # -----------------------------------
 
         decision = select_hypothesis_test(
 
             feature,
 
-            target,
+            target_series,
 
             feature_schema,
 
@@ -100,9 +141,17 @@ def analyze_hypothesis_testing(
 
         )
 
+        # -----------------------------------
+        # No suitable test
+        # -----------------------------------
+
         if decision["selected_test"] is None:
 
             continue
+
+        # -----------------------------------
+        # Selected test
+        # -----------------------------------
 
         method = decision["selected_test"]
 
@@ -110,25 +159,38 @@ def analyze_hypothesis_testing(
 
             feature,
 
-            target
+            target_series
 
         )
+
+        # -----------------------------------
+        # Statistical significance
+        # -----------------------------------
 
         if result.get("reject_null", False):
 
             significant_features += 1
 
+        # -----------------------------------
+        # Store result
+        # -----------------------------------
+
         results.append({
 
-            "entity_1": feature_schema["column_name"],
+            "entity_1":
+                feature_schema["column_name"],
 
-            "entity_2": target_schema["column_name"],
+            "entity_2":
+                target_schema["column_name"],
 
             "status": (
 
                 "Statistically Significant"
 
-                if result.get("reject_null", False)
+                if result.get(
+                    "reject_null",
+                    False
+                )
 
                 else
 
@@ -140,15 +202,18 @@ def analyze_hypothesis_testing(
 
             "metadata": {
 
-                "test": method.__name__,
+                "test":
+                    method.__name__,
 
-                "reason": decision["reason"],
+                "reason":
+                    decision["reason"],
 
                 "alternatives": [
 
                     alternative.__name__
 
-                    for alternative in decision["alternatives"]
+                    for alternative
+                    in decision["alternatives"]
 
                 ]
 
@@ -156,17 +221,24 @@ def analyze_hypothesis_testing(
 
         })
 
+    # ---------------------------------------
+    # Final response
+    # ---------------------------------------
+
     return {
 
         "summary": {
 
             "target_detected": True,
 
-            "target": target_schema["column_name"],
+            "target":
+                target_schema["column_name"],
 
-            "analyzed_features": analyzed_features,
+            "analyzed_features":
+                analyzed_features,
 
-            "significant_features": significant_features
+            "significant_features":
+                significant_features
 
         },
 

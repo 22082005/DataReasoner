@@ -1,16 +1,18 @@
 import pandas as pd
 
-
 def analyze_duplicates(df: pd.DataFrame):
     """
     Analyze duplicate rows in the dataset.
 
+    Parameters
+    ----------
+    df : pd.DataFrame
+
     Returns
     -------
     dict
-        Duplicate statistics.
     """
-    results=[]
+
     duplicate_mask = df.duplicated()
 
     duplicate_indices = df.index[duplicate_mask].tolist()
@@ -22,18 +24,44 @@ def analyze_duplicates(df: pd.DataFrame):
         2
     )
 
-    results.append( {
-        "duplicate_count": duplicate_count,
-        "duplicate_percentage": duplicate_percentage,
-        "duplicate_indices": duplicate_indices
-    })
     return {
+
         "summary": {
+
+            "total_rows": len(df),
+
             "duplicate_rows": duplicate_count,
+
             "duplicate_percentage": duplicate_percentage,
+
             "has_duplicates": duplicate_count > 0
+
         },
-        "results": results
+
+        "results": [
+
+            {
+
+                "duplicate_indices": duplicate_indices,
+
+                "duplicate_count": duplicate_count,
+
+                "duplicate_percentage": duplicate_percentage
+
+            }
+
+        ],
+
+        "recommendations": [],
+
+        "metadata": {
+
+            "module": "Duplicates",
+
+            "version": "1.0"
+
+        }
+
     }
 
 

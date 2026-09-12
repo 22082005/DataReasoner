@@ -1,0 +1,47 @@
+.hypothesis-card {
+    margin-top: 30px;
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.hypothesis-summary {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.hypothesis-summary div {
+    padding: 15px 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    min-width: 150px;
+}
+
+.hypothesis-summary strong {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.hypothesis-summary span {
+    font-size: 18px;
+}
+
+.hypothesis-card table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.hypothesis-card th,
+.hypothesis-card td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.hypothesis-card th {
+    background: #f5f5f5;
+}

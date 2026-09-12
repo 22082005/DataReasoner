@@ -2,6 +2,8 @@ import pandas as pd
 
 from .selector import select_outlier_method
 from statstics.descriptive import descriptive_summary
+
+
 def analyze_outliers(
     df: pd.DataFrame,
     schema

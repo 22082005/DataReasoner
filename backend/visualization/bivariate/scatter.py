@@ -8,35 +8,90 @@ from visualization.utils import (
 
 def scatter(
     x: pd.Series,
-    y: pd.Series
+    y: pd.Series,
+    target: pd.Series = None
 ):
     """
-    Prepare scatter plot visualization data.
+    Prepare target-aware scatter plot data.
 
     Parameters
     ----------
     x : pandas.Series
+        Numeric feature for x-axis.
 
     y : pandas.Series
+        Numeric feature for y-axis.
+
+    target : pandas.Series, optional
+        Target variable used for grouping points.
 
     Returns
     -------
     dict
     """
 
+    # -----------------------------------------
+    # Validate numeric features
+    # -----------------------------------------
+
     validate_numeric(x)
     validate_numeric(y)
 
+    # -----------------------------------------
+    # Combine features
+    # -----------------------------------------
+
+    data = [
+        x.rename("_x"),
+        y.rename("_y")
+    ]
+
+    if target is not None:
+
+        data.append(
+            target.rename("_target")
+        )
+
     df = pd.concat(
-        [x, y],
+        data,
         axis=1
     ).dropna()
+
+    # -----------------------------------------
+    # Prepare response data
+    # -----------------------------------------
+
+    chart_data = {
+
+        "x": df["_x"].tolist(),
+
+        "y": df["_y"].tolist()
+
+    }
+
+    # -----------------------------------------
+    # Add target information
+    # -----------------------------------------
+
+    if target is not None:
+
+        chart_data["target"] = (
+            df["_target"]
+            .astype(str)
+            .tolist()
+        )
+
+    # -----------------------------------------
+    # Chart Response
+    # -----------------------------------------
 
     return create_chart_response(
 
         chart_type="scatter",
 
-        title=f"{x.name} vs {y.name}",
+        title=(
+            f"{x.name} vs {y.name}"
+        ),
 
         x_axis=x.name,
 
@@ -53,12 +108,6 @@ def scatter(
             "correlation, clusters and outliers."
         ),
 
-        data={
-
-            "x": df.iloc[:, 0].tolist(),
-
-            "y": df.iloc[:, 1].tolist()
-
-        }
+        data=chart_data
 
     )
