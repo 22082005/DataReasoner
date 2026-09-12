@@ -221,6 +221,7 @@ def analyze_eda(
 )
     print("\nRECOMMENDATIONS:")
     print(recommendations)
+    
 
     # -------------------------------------------------
     # Final Result
